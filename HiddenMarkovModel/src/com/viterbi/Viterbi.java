@@ -102,7 +102,7 @@ public class Viterbi {
 			System.out.println(beta[T][i]);
 		}
 
-		/** Induction - CORRIGIR
+		/** Induction - OK
 		 *  beta(t)(i) = sum[a(i)(j) * b(j)(O(t+1) * beta(t+1)(j)]
 		 *  
 		 *  t = iterates over the T
@@ -110,14 +110,15 @@ public class Viterbi {
 		 *  i = iterates over the states for the sum
 		 */
 
-		for(int t = T-1; t > 0; t--) {
+		for(int t = T-1; t >= 0; t--) {
 			for(int i = 0; i < states; i++) {			
 				for(int j = 0; j < states; j++) {
-					beta[t][i] += A[i][j] * B[j][observations[t+1]] * beta[t+1][j];
-					System.out.println(beta[t][j]);
+					beta[t][i] += A[i][j] * B[j][observations[t]] * beta[t+1][j];
 				}
-				// System.out.println();
+				
+				//System.out.println(beta[t][i]);				
 			}
+			//System.out.println();
 		}
 
 	}
