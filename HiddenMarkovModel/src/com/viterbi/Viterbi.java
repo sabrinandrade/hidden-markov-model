@@ -53,7 +53,7 @@ public class Viterbi {
 
 		// P(O|x)
 		double probabilityAlpha = calculatesSymbolProbability();
-		System.out.println("Foward\nConditional probability: " + probabilityAlpha);
+		System.out.println("Forward\nConditional probability: " + probabilityAlpha);
 
 
 		// Backward variable beta
