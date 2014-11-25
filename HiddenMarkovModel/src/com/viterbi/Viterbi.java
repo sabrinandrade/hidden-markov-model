@@ -49,8 +49,8 @@ public class Viterbi {
 
 
 		//P(O|x) - 2 indicates that is the probability for the values of Beta
-		double probabilityBeta = calculatesSymbolProbability(pi, B);
-		System.out.println("Backward\nConditional probability: " + probabilityBeta);
+		double probabilityBeta = calculatesSymbolProbability(pi, B, observations);
+		System.out.println("\nBackward\nConditional probability: " + probabilityBeta);
 
 
 		// Sequence of states - Viterbi
@@ -99,7 +99,7 @@ public class Viterbi {
 		 */
 		for(int i = 0; i < states; i++) {
 			beta[T][i] = 1;
-			System.out.println(beta[T][i]);
+			// System.out.println(beta[T][i]);
 		}
 
 		/** Induction - OK
@@ -143,11 +143,11 @@ public class Viterbi {
 	}
 
 
-	private double calculatesSymbolProbability(double[] pi, double[][] B) {
+	private double calculatesSymbolProbability(double[] pi, double[][] B, int[] observations) {
 		double value = 0;
 
 		for(int i = 0; i < states; i ++) {
-			value += pi[i] * B[i][0] * beta[0][i]; // confirmar
+			value += pi[i] * B[i][observations[1]] * beta[1][i]; // confirmar
 		}
 
 		return value;
