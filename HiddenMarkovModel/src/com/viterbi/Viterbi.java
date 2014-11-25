@@ -9,12 +9,12 @@ package com.viterbi;
  */
 public class Viterbi {
 
-	
+
 	private double[][] alpha;
 	private int states;
 	private int T;
 
-	
+
 	public void execute(double[][] A, double[][] B, double[] pi, int[] sequence) {
 		/** 
 		 * alpha.ROW = (sequence.length = T). Where 1 =< t =< T-1 but alpha goes til t+1 (t+1 = T)
@@ -24,19 +24,29 @@ public class Viterbi {
 		states = A.length;
 		T = sequence.length;
 
+		
 		// Foward variable alpha
 		calculatesAlpha(A, B, pi, sequence);
 
-		// P(O|x)
-		double probability = calculatesSymbolProbability();
-		System.out.println("Foward\nConditional probability: " + probability);
+		
+		// P(O|x) - 1 indicates that is the probability for the values of Alpha
+		double probabilityAlpha = calculatesSymbolProbability(1);
+		System.out.println("Foward\nConditional probability: " + probabilityAlpha);
+
 		
 		// Backward variable beta
+		calculatesBeta();
+
+		
+		//P(O|x) - 2 indicates that is the probability for the values of Beta
+		double probabilityBeta = calculatesSymbolProbability(2);
+		System.out.println("Foward\nConditional probability: " + probabilityBeta);
+
 		
 		// Sequence of states - Viterbi
 	}
 
-	
+
 	private void calculatesAlpha(double[][] A, double[][] B, double[] pi, int[] sequence) {
 
 		/** Initialization of alpha - OK
@@ -66,15 +76,24 @@ public class Viterbi {
 			// System.out.println();
 		}
 	}
-	
-	
-	private double calculatesSymbolProbability() {
+
+
+	private double calculatesSymbolProbability(int n) {
 		double value = 0;
-		
-		for(int i = 0; i < states; i ++) {
-			value += alpha[T-1][i];
+
+		if(n == 1) {
+			for(int i = 0; i < states; i ++) {
+				value += alpha[T-1][i];
+			}
+		} else {
+			// TODO
 		}
-		
+
 		return value;
+	}
+
+
+	private void calculatesBeta() {
+		
 	}
 }
