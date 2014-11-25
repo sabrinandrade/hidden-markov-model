@@ -19,10 +19,10 @@ public class Main {
 		double[] pi = new double[] {0.6, 0.4, 0};
 		
 		// a = 0, b = 1
-		int[] sequence = new int[] {0, 0, 1, 1}; 
+		int[] observations = new int[] {0, 0, 1, 1}; 
 		
 		Viterbi viterbi = new Viterbi();
-		viterbi.execute(A, B, pi, sequence);		
+		viterbi.execute(A, B, pi, observations);		
 	}
 
 }

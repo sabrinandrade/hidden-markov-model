@@ -11,22 +11,32 @@ public class Viterbi {
 
 
 	private double[][] alpha;
+	private double[][] beta;
 	private int states;
 	private int T;
 
 
-	public void execute(double[][] A, double[][] B, double[] pi, int[] sequence) {
+	public void execute(double[][] A, double[][] B, double[] pi, int[] observations) {
+		states = A.length;
+		T = observations.length;
+		
+		
 		/** 
 		 * alpha.ROW = (sequence.length = T). Where 1 =< t =< T-1 but alpha goes til t+1 (t+1 = T)
 		 * alpha.COL = number of states
 		 */
-		alpha = new double[sequence.length][A.length];
-		states = A.length;
-		T = sequence.length;
+		alpha = new double[T][states];
+		
+		
+		/**
+		 * beta.ROW = sequence.length + 1. Includes the initial state
+		 * beta.COL = number of states
+		 */
+		beta = new double[T + 1][states];
 
 
-		// Foward variable alpha
-		calculatesAlpha(A, B, pi, sequence);
+		// Forward variable alpha
+		calculatesAlpha(A, B, pi, observations);
 
 
 		// P(O|x) - 1 indicates that is the probability for the values of Alpha
@@ -35,7 +45,7 @@ public class Viterbi {
 
 
 		// Backward variable beta
-		calculatesBeta();
+		calculatesBeta(A, B);
 
 
 		//P(O|x) - 2 indicates that is the probability for the values of Beta
@@ -44,13 +54,14 @@ public class Viterbi {
 
 
 		// Sequence of states - Viterbi
+		double[] sequence = bestSequence();
 	}
 
 
-	private void calculatesAlpha(double[][] A, double[][] B, double[] pi, int[] sequence) {
+	private void calculatesAlpha(double[][] A, double[][] B, double[] pi, int[] observations) {
 
 		/** Initialization of alpha - OK
-		 * 	alpha1(i) = pi(i)*bi(O1), i =< i =< N
+		 *	alpha(1)(i) = pi(i) * b(i)(O1), 1 =< i =< N
 		 */
 		for(int i = 0; i < states; i++) {
 			alpha[0][i] = pi[i] * B[i][0];
@@ -67,17 +78,30 @@ public class Viterbi {
 
 		for(int t = 1; t < T; t++) {
 			for(int j = 0; j < states; j++) {
-				for(int i = 0; i < states; i++) {
+				for(int i = 0; i < states; i++) 
 					alpha[t][j] += (alpha[t-1][i] * A[i][j]);
-				}
-				alpha[t][j] *= B[j][sequence[t]];
+				
+				alpha[t][j] *= B[j][observations[t]];
 				// System.out.println(alpha[t][j]);
 			}
 			// System.out.println();
 		}
 	}
 
+	
+	private void calculatesBeta(double[][] A, double[][] B) {
 
+	}
+	
+
+	private double[] bestSequence() {
+		// TODO
+		// double[] value = new double[];
+		
+		return null;
+	}
+	
+	
 	private double calculatesSymbolProbability() {
 		double value = 0;
 
@@ -93,14 +117,10 @@ public class Viterbi {
 		double value = 0;
 
 		for(int i = 0; i < states; i ++) {
-			// TODO
+			value += pi[i] * B[i][0] * beta[0][i]; // confirmar
 		}
 
 		return value;
 	}
 
-
-	private void calculatesBeta() {
-
-	}
 }
