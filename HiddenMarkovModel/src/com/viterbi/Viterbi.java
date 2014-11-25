@@ -12,6 +12,9 @@ public class Viterbi {
 
 	private double[][] alpha;
 	private double[][] beta;
+	private double[][] delta;
+	private int[][] psi;
+	private int[] q;
 	private int states;
 	private int T;
 
@@ -33,6 +36,15 @@ public class Viterbi {
 		 * beta.COL = number of states
 		 */
 		beta = new double[T + 1][states];
+		
+		
+		delta = new double[T][states];
+		
+		
+		psi = new int[T][states];
+		
+		
+		q = new int[T];
 
 
 		// Forward variable alpha
@@ -54,10 +66,11 @@ public class Viterbi {
 
 
 		// Sequence of states - Viterbi
-//		int[] sequence = bestSequence();
-//		for(int i : sequence) {
-//			System.out.print(i + "\t");
-//		}
+		bestSequence(pi, A, B, observations);
+		System.out.println("\nBest sequence");
+		for(int i : q) {
+			System.out.print((i+1) + "\t");
+		}
 	}
 
 
@@ -124,11 +137,58 @@ public class Viterbi {
 	}
 
 
-	private int[] bestSequence() {
-		// TODO
-		// int[] value = new int[];
+	private void bestSequence(double[] pi, double[][] A, double[][] B, int[] observations) {
+				
+		/** Initialization of delta - OK
+		 *	delta(1)(i) = pi(i) * b(i)(O1), 1 =< i =< N
+		 *  psi1(i) = 0
+		 */
+		for(int i = 0; i < states; i++) {
+			delta[0][i] = pi[i] * B[i][0];
+			psi[0][i] = 0;
+			//System.out.println(delta[0][i]);
+		}
+		
+		
+		/** 
+		 *  delta(t+1)(j) = max(delta(t)(i)*a(i)(j)) * b(j)(O(t+1))
+		 *  
+		 *  t = iterates over the T
+		 *  j = iterates over the states
+		 *  i = iterates over the states for the sum
+		 */
+		
+		double[] aux = new double[states];
+		int index = 0;
+		
+		for(int t = 1; t < T; t++) {
+			for(int j = 0; j < states; j++) {
+				for(int i = 0; i < states; i++) {
+					aux[i] = (delta[t-1][i] * A[i][j]);
+				}
 
-		return null;
+				delta[t][j] = findMax(aux) * B[j][observations[t]];
+				//System.out.println(delta[t][j]);
+				
+				index = findMaxIndex(aux);
+				psi[t][j] = index;
+				//System.out.println("Psi: " + psi[t][j]);
+			}
+			//System.out.println();
+		}
+		
+		
+		/**
+		 * P = max[delta(T)(i)]
+		 * Q = max[index of P]
+		 */
+		
+		q[T-1] = findMaxIndex(delta[T-1]);
+		
+		for(int t = T-2; t >= 0; t--) {
+			q[t] = psi[t+1][q[t+1]];
+		}
+		
 	}
 
 
@@ -147,10 +207,35 @@ public class Viterbi {
 		double value = 0;
 
 		for(int i = 0; i < states; i ++) {
-			value += pi[i] * B[i][observations[1]] * beta[1][i]; // confirmar
+			value += pi[i] * B[i][observations[1]] * beta[1][i];
 		}
 
 		return value;
 	}
+	
+	
+	private double findMax(double[] values) {
+		double max = values[0];
 
+		for (int i = 1; i < values.length; i++) {
+		    if ( values[i] > max) {
+		      max = values[i];
+		    }
+		}
+		
+		return max;
+	}
+	
+	private int findMaxIndex(double[] values) {
+		double max = values[0];
+		int index = 0;
+
+		for (int i = 1; i < values.length; i++) {
+		    if ( values[i] > max) {
+		      index = i;
+		    }
+		}
+		
+		return index;
+	}
 }
