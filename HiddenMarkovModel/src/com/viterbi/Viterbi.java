@@ -24,25 +24,25 @@ public class Viterbi {
 		states = A.length;
 		T = sequence.length;
 
-		
+
 		// Foward variable alpha
 		calculatesAlpha(A, B, pi, sequence);
 
-		
+
 		// P(O|x) - 1 indicates that is the probability for the values of Alpha
-		double probabilityAlpha = calculatesSymbolProbability(1);
+		double probabilityAlpha = calculatesSymbolProbability();
 		System.out.println("Foward\nConditional probability: " + probabilityAlpha);
 
-		
+
 		// Backward variable beta
 		calculatesBeta();
 
-		
-		//P(O|x) - 2 indicates that is the probability for the values of Beta
-		double probabilityBeta = calculatesSymbolProbability(2);
-		System.out.println("Foward\nConditional probability: " + probabilityBeta);
 
-		
+		//P(O|x) - 2 indicates that is the probability for the values of Beta
+		double probabilityBeta = calculatesSymbolProbability(pi, B);
+		System.out.println("Backward\nConditional probability: " + probabilityBeta);
+
+
 		// Sequence of states - Viterbi
 	}
 
@@ -78,14 +78,21 @@ public class Viterbi {
 	}
 
 
-	private double calculatesSymbolProbability(int n) {
+	private double calculatesSymbolProbability() {
 		double value = 0;
 
-		if(n == 1) {
-			for(int i = 0; i < states; i ++) {
-				value += alpha[T-1][i];
-			}
-		} else {
+		for(int i = 0; i < states; i ++) {
+			value += alpha[T-1][i];
+		}
+
+		return value;
+	}
+	
+	
+	private double calculatesSymbolProbability(double[] pi, double[][] B) {
+		double value = 0;
+
+		for(int i = 0; i < states; i ++) {
 			// TODO
 		}
 
@@ -94,6 +101,6 @@ public class Viterbi {
 
 
 	private void calculatesBeta() {
-		
+
 	}
 }
