@@ -51,7 +51,7 @@ public class Viterbi {
 		calculatesAlpha(A, B, pi, observations);
 
 
-		// P(O|x) - 1 indicates that is the probability for the values of Alpha
+		// P(O|x)
 		double probabilityAlpha = calculatesSymbolProbability();
 		System.out.println("Foward\nConditional probability: " + probabilityAlpha);
 
@@ -60,7 +60,7 @@ public class Viterbi {
 		calculatesBeta(A, B, observations);
 
 
-		//P(O|x) - 2 indicates that is the probability for the values of Beta
+		//P(O|x)
 		double probabilityBeta = calculatesSymbolProbability(pi, B, observations);
 		System.out.println("\nBackward\nConditional probability: " + probabilityBeta);
 
@@ -76,7 +76,7 @@ public class Viterbi {
 
 	private void calculatesAlpha(double[][] A, double[][] B, double[] pi, int[] observations) {
 
-		/** Initialization of alpha - OK
+		/** Initialization of alpha
 		 *	alpha(1)(i) = pi(i) * b(i)(O1), 1 =< i =< N
 		 */
 		for(int i = 0; i < states; i++) {
@@ -84,7 +84,7 @@ public class Viterbi {
 			// System.out.println(alpha[0][i]);
 		}
 
-		/** Induction - OK
+		/** Induction
 		 *  alpha(t+1)(j) = sum(alpha(t)(i)*a(i)(j)) * b(j)(O(t+1))
 		 *  
 		 *  t = iterates over the T
@@ -107,7 +107,7 @@ public class Viterbi {
 
 	private void calculatesBeta(double[][] A, double[][] B, int[] observations) {
 
-		/** Initialization of beta - OK
+		/** Initialization of beta
 		 *	beta(T)(i) = 1, 1 =< i =< N
 		 */
 		for(int i = 0; i < states; i++) {
@@ -115,7 +115,7 @@ public class Viterbi {
 			// System.out.println(beta[T][i]);
 		}
 
-		/** Induction - OK
+		/** Induction
 		 *  beta(t)(i) = sum[a(i)(j) * b(j)(O(t+1) * beta(t+1)(j)]
 		 *  
 		 *  t = iterates over the T
@@ -139,7 +139,7 @@ public class Viterbi {
 
 	private void bestSequence(double[] pi, double[][] A, double[][] B, int[] observations) {
 				
-		/** Initialization of delta - OK
+		/** Initialization of delta
 		 *	delta(1)(i) = pi(i) * b(i)(O1), 1 =< i =< N
 		 *  psi1(i) = 0
 		 */
@@ -152,10 +152,10 @@ public class Viterbi {
 		
 		/** 
 		 *  delta(t+1)(j) = max(delta(t)(i)*a(i)(j)) * b(j)(O(t+1))
+		 *  psi(t+1)(j) = max(delta(t)(i)*a(i)(j))
 		 *  
 		 *  t = iterates over the T
 		 *  j = iterates over the states
-		 *  i = iterates over the states for the sum
 		 */
 		
 		double[] aux = new double[states];
@@ -225,6 +225,7 @@ public class Viterbi {
 		
 		return max;
 	}
+	
 	
 	private int findMaxIndex(double[] values) {
 		double max = values[0];
