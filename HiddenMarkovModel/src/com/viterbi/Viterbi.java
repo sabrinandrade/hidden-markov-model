@@ -3,10 +3,6 @@
  */
 package com.viterbi;
 
-/**
- * @author MarkVII
- *
- */
 public class Viterbi {
 
 
