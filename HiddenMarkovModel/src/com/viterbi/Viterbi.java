@@ -83,7 +83,7 @@ public class Viterbi {
 		/** Induction
 		 *  alpha(t+1)(j) = sum(alpha(t)(i)*a(i)(j)) * b(j)(O(t+1))
 		 *  
-		 *  t = iterates over the T
+		 *  t = iterates over T
 		 *  j = iterates over the states
 		 *  i = iterates over the states for the sum
 		 */
@@ -114,7 +114,7 @@ public class Viterbi {
 		/** Induction
 		 *  beta(t)(i) = sum[a(i)(j) * b(j)(O(t+1) * beta(t+1)(j)]
 		 *  
-		 *  t = iterates over the T
+		 *  t = iterates over T
 		 *  j = iterates over the states
 		 *  i = iterates over the states for the sum
 		 */
@@ -150,7 +150,7 @@ public class Viterbi {
 		 *  delta(t+1)(j) = max(delta(t)(i)*a(i)(j)) * b(j)(O(t+1))
 		 *  psi(t+1)(j) = max(delta(t)(i)*a(i)(j))
 		 *  
-		 *  t = iterates over the T
+		 *  t = iterates over T
 		 *  j = iterates over the states
 		 */
 		
